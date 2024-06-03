@@ -11,7 +11,7 @@ extern int gWorkshopId;
 class Workshop {
 private:
     std::map<int, Worker*> _workers;
-    int _id;
+    int                    _id;
 
 public:
     Workshop();

@@ -24,10 +24,10 @@ struct Statistic {
 
 class Worker {
 private:
-    Position _coordonnee;
-    Statistic _stat;
-    ATool* _tool;
-    const int _id;
+    Position                 _coordonnee;
+    Statistic                _stat;
+    ATool*                   _tool;
+    const int                _id;
     std::map<int, Workshop*> _workshops;
 
     void log(const std::string& message) { std::cout << "[Worker " << _id << "]:\t" << message << std::endl; }
@@ -56,7 +56,7 @@ public:
 inline void ATool::release() {
     if (_owner != NULL) {
         Worker* oldOwner = _owner;
-        _owner = NULL;
+        _owner           = NULL;
         oldOwner->takeTool();
     }
 }

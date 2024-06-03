@@ -18,7 +18,7 @@ void Workshop::executeWorkDay() {
 }
 
 void Workshop::registerWorker(Worker* worker) {
-    int newWorkerId = worker->getId();
+    int                newWorkerId = worker->getId();
     std::ostringstream oss;
     if (_workers.find(newWorkerId) == _workers.end()) {
         _workers[newWorkerId] = worker;

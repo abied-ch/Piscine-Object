@@ -7,9 +7,9 @@ class Worker;
 
 class ATool {
 private:
-    int _numberOfUses;
+    int               _numberOfUses;
     const std::string _type;
-    Worker* _owner;
+    Worker*           _owner;
 
 public:
     ATool(int uses, const std::string& type, Worker* owner = NULL) : _numberOfUses(uses), _type(type), _owner(owner) {
@@ -26,10 +26,10 @@ public:
     }
 
     const std::string& getType() const { return _type; }
-    const int& getNumberOfUses() const { return _numberOfUses; }
-    bool hasOwner() { return _owner != NULL; }
-    void newOwner(Worker* owner) { _owner = owner; }
-    virtual void release();
+    const int&         getNumberOfUses() const { return _numberOfUses; }
+    bool               hasOwner() { return _owner != NULL; }
+    void               newOwner(Worker* owner) { _owner = owner; }
+    virtual void       release();
 };
 
 class Shovel : public ATool {

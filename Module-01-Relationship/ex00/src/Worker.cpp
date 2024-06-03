@@ -33,7 +33,7 @@ void Worker::takeTool() {
 }
 
 void Worker::registerWorkshop(Workshop* workshop) {
-    int newWorkshopId = workshop->getId();
+    int                newWorkshopId = workshop->getId();
     std::ostringstream oss;
     if (_workshops.find(newWorkshopId) == _workshops.end()) {
         _workshops[newWorkshopId] = workshop;
@@ -54,11 +54,11 @@ void Worker::print() const {
     std::ostringstream oss;
     std::cout << "[Worker " << _id << "]:\t";
     std::cout << "Status: (Position: (" << _coordonnee.x << ", " << _coordonnee.y << ", " << _coordonnee.z
-        << "), Statistic: (Level: " << _stat.level << ", Exp: " << _stat.exp << "))" << std::endl;
+              << "), Statistic: (Level: " << _stat.level << ", Exp: " << _stat.exp << "))" << std::endl;
     std::cout << "[Worker " << _id << "]:\t";
     if (_tool != NULL) {
         std::cout << "Worker has a " << _tool->getType() << " with " << _tool->getNumberOfUses() << " uses left."
-            << std::endl;
+                  << std::endl;
     } else {
         std::cout << "Worker does not have a tool." << std::endl;
     }
