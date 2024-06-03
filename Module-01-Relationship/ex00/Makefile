@@ -33,6 +33,7 @@ fclean: clean
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(DEPS)
+	$(RM) vgcore.*
 
 re: fclean all
 

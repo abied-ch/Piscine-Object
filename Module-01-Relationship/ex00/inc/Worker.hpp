@@ -2,8 +2,12 @@
 #define WORKER_HPP
 
 #include <iostream>
+#include <map>
 
 #include "ATool.hpp"
+#include "Workshop.hpp"
+
+int gWorkerId = 0;
 
 void announce(const std::string& structureType) {
     std::cout << "Initializing instance of " << structureType << "." << std::endl;
@@ -24,45 +28,65 @@ private:
     Position _coordonnee;
     Statistic _stat;
     ATool* _tool;
+    const int _id;
+    std::map<int, Workshop*> _workshops;
+
+    void log(const std::string& message) { std::cout << "[Worker " << _id << "]: " << message << std::endl; }
 
 public:
-    Worker(Position position, Statistic statistic) : _coordonnee(position), _stat(statistic), _tool(NULL) {}
+    Worker(Position position, Statistic stat) : _coordonnee(position), _stat(stat), _tool(NULL), _id(gWorkerId++) {}
     ~Worker() {
         if (_tool != NULL) {
-            std::cout << "Worker destroyed - Shovel remains." << std::endl;
+            log("Destroyed. Shovel remains intact.");
         }
     }
 
     void giveTool(ATool* tool) {
         std::string newToolType = tool->getType();
         if (tool->hasOwner()) {
-            std::cout << "Taking " << newToolType << " from previous owner." << std::endl;
+            log("Taking " + newToolType + " from previous owner.");
             tool->release();
         }
 
         if (_tool != NULL) {
-            std::cout << "Worker already has a tool: " << _tool->getType() << ". Releasing tool." << std::endl;
+            log("Worker already has a tool: " + _tool->getType() + ". Releasing tool.");
             _tool->release();
         }
-        std::cout << "Giving " << newToolType << " to Worker." << std::endl;
+        log("Now holding " + newToolType + ".");
         _tool = tool;
         _tool->newOwner(this);
     }
 
     void takeTool() {
         if (_tool != NULL) {
-            std::cout << "Taking " << _tool->getType() << " from Worker." << std::endl;
+            log("Putting " + _tool->getType() + " back.");
         }
         _tool = NULL;
     }
+
+    void registerWorkshop(Workshop* workshop) {
+        int newWorkshopId = workshop->getId();
+        if (_workshops.find(newWorkshopId) == _workshops.end()) {
+            _workshops[newWorkshopId] = workshop;
+            log("Registered to Workshop " + workshop->getId());
+        }
+    }
+
+    void work(Workshop* workshop) {
+        log()
+        std::cout << "Worker " << _id << " started working in Workshop " << workshop->getId() << std::endl;
+    }
+
+    const int& getId() const { return _id; }
 
     void print() const {
         std::cout << "Worker(Position: (" << _coordonnee.x << ", " << _coordonnee.y << ", " << _coordonnee.z
                   << "), Statistic: (Level: " << _stat.level << ", Exp: " << _stat.exp << "))" << std::endl;
         if (_tool != NULL) {
-            std::cout << "Worker has a Shovel with " << _tool->getNumberOfUses() << " uses left." << std::endl;
+            std::cout << "Worker has a " << _tool->getType() << " with " << _tool->getNumberOfUses() << " uses left."
+                      << std::endl;
         } else {
-            std::cout << "Worker does not have a Shovel." << std::endl;
+            std::cout << "Worker does not have a " << _tool->getType() << "." << std::endl;
         }
     };
 };
