@@ -41,10 +41,15 @@ public:
     }
 
     const int& getId() const { return _id; }
+
     void giveTool(ATool* tool);
+
     void takeTool();
+
     void registerWorkshop(Workshop* workshop);
+
     void work(Workshop* workshop);
+
     void print() const;
 };
 
