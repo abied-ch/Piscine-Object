@@ -1,11 +1,12 @@
 #ifndef WORKSHOP_HPP
 #define WORKSHOP_HPP
 
+#include <iostream>
 #include <map>
 
-#include "Worker.hpp"
+class Worker;
 
-int gWorkshopId = 0;
+extern int gWorkshopId;
 
 class Workshop {
 private:
@@ -13,20 +14,13 @@ private:
     int _id;
 
 public:
-    Workshop() : _id(gWorkshopId++) {}
+    Workshop();
 
-    void executeWorkDay() {
-        for (std::map<int, Worker*>::iterator worker = _workers.begin(); worker != _workers.end(); ++worker) {
-            worker->second->work(this);
-        }
-    }
+    void log(const std::string& message) { std::cout << "[Workshop " << _id << "]:\t" << message << std::endl; }
 
-    void registerWorker(Worker* worker) {
-        int newWorkerId = worker->getId();
-        if (_workers.find(newWorkerId) == _workers.end()) {
-            _workers[newWorkerId] = worker;
-        }
-    }
+    void executeWorkDay();
+
+    void registerWorker(Worker* worker);
 
     const int& getId() const { return _id; }
 };

@@ -13,15 +13,15 @@ private:
 
 public:
     ATool(int uses, const std::string& type, Worker* owner = NULL) : _numberOfUses(uses), _type(type), _owner(owner) {
-        std::cout << "Tool of type " << type << " created." << std::endl;
+        std::cout << "[Tool]:\t\tTool of type " << type << " created." << std::endl;
     }
 
     void use() {
         if (_numberOfUses > 0) {
             _numberOfUses--;
-            std::cout << _type << " used, remaining uses: " << _numberOfUses << "." << std::endl;
+            std::cout << "[Tool]:\t\t" << _type << " used, remaining uses: " << _numberOfUses << "." << std::endl;
         } else {
-            std::cout << _type << " has no more uses left!" << std::endl;
+            std::cout << "[Tool]:\t\t" << _type << " has no more uses left!" << std::endl;
         }
     }
 
