@@ -10,7 +10,7 @@ Bank::~Bank() {
     }
 }
 
-int Bank::getLiquidity() const {
+const int &Bank::getLiquidity() const {
     return _liquidity;
 }
 

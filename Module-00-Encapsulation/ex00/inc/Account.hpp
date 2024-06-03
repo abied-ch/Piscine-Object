@@ -10,8 +10,8 @@ private:
 
 public:
     Account(int id, int value);
-    int getId() const;
-    int getValue() const;
+    const int& getId() const;
+    const int& getValue() const;
     void addValue(int amount);
     void subtractValue(int amount);
 

@@ -15,7 +15,7 @@ private:
 public:
     Bank();
 
-    int getLiquidity() const;
+    const int& getLiquidity() const;
     void addLiquidity(int amount);
 
     bool createAccount(int id, int initialValue);
