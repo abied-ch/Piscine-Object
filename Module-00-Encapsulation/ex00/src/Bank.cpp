@@ -4,9 +4,9 @@ Bank::Bank() : _liquidity(0) {
 }
 
 Bank::~Bank() {
-    std::vector<Account *>::iterator account = _clientAccounts.begin();
+    std::map<int, Account *>::iterator account = _clientAccounts.begin();
     for (; account != _clientAccounts.end(); account++) {
-        delete *account;
+        delete account->second;
     }
 }
 
@@ -19,18 +19,12 @@ void Bank::addLiquidity(int amount) {
 }
 
 bool Bank::isUniqueId(int id) const {
-    std::vector<Account *>::const_iterator account = _clientAccounts.begin();
-    for (; account != _clientAccounts.end(); account++) {
-        if ((*account)->getId() == id) {
-            return false;
-        }
-    }
-    return true;
+    return _clientAccounts.find(id) == _clientAccounts.end();
 }
 
 bool Bank::createAccount(int id, int initialValue) {
     if (isUniqueId(id) and initialValue <= _liquidity) {
-        _clientAccounts.push_back(new Account(id, initialValue));
+        _clientAccounts[id] = new Account(id, initialValue);
         _liquidity -= initialValue;
         return true;
     }
@@ -38,11 +32,11 @@ bool Bank::createAccount(int id, int initialValue) {
 }
 
 bool Bank::deleteAccount(int id) {
-    std::vector<Account *>::iterator account = _clientAccounts.begin();
+    std::map<int, Account *>::iterator account = _clientAccounts.begin();
     for (; account != _clientAccounts.end(); account++) {
-        if ((*account)->getId() == id) {
-            _liquidity += (*account)->getValue();
-            delete *account;
+        if ((account->second)->getId() == id) {
+            _liquidity += account->second->getValue();
+            delete account->second;
             _clientAccounts.erase(account);
             return true;
         }
@@ -52,12 +46,12 @@ bool Bank::deleteAccount(int id) {
 
 bool Bank::addFundsToAccount(int id, int amount) {
     if (amount <= _liquidity) {
-        std::vector<Account *>::iterator account = _clientAccounts.begin();
+        std::map<int, Account *>::iterator account = _clientAccounts.begin();
         for (; account != _clientAccounts.end(); account++) {
-            if ((*account)->getId() == id) {
+            if (account->second->getId() == id) {
                 int depositAmount = amount * 0.95;
                 int bankFee = amount * 0.05;
-                (*account)->addValue(depositAmount);
+                account->second->_value += depositAmount;
                 _liquidity -= (depositAmount + bankFee);
                 return true;
             }
@@ -68,10 +62,10 @@ bool Bank::addFundsToAccount(int id, int amount) {
 
 bool Bank::giveLoan(int id, int amount) {
     if (amount <= _liquidity) {
-        std::vector<Account *>::iterator account = _clientAccounts.begin();
+        std::map<int, Account *>::iterator account = _clientAccounts.begin();
         for (; account != _clientAccounts.end(); account++) {
-            if ((*account)->getId() == id) {
-                (*account)->addValue(amount);
+            if (account->second->getId() == id) {
+                account->second->_value += amount;
                 _liquidity -= amount;
                 return true;
             }

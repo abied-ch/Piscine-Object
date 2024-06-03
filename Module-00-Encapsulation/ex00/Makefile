@@ -13,7 +13,6 @@ CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -Iinc -g
 SRCS		= \
 		$(SRCS_DIR)/main.cpp \
 		$(SRCS_DIR)/Bank.cpp \
-		$(SRCS_DIR)/Account.cpp \
 
 OBJS		= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 
