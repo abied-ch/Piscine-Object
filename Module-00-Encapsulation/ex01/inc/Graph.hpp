@@ -9,12 +9,16 @@ class Graph {
 private:
     const Vector2 _size;
     std::vector<Vector2> _points;
+    std::vector<std::pair<Vector2, Vector2> > _lines;
 
 public:
     Graph(float width, float height);
 
     void addPoint(const Vector2& point);
+    void addLine(const Vector2& start, const Vector2& end);
+    void readPointsFromFile(const std::string& filename);
     void draw() const;
+    void generatePNG(const std::string& filename) const;
 };
 
 #endif  // GRAPH_HPP
