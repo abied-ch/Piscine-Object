@@ -5,15 +5,35 @@
 
 #include "Account.hpp"
 
-class Account;
-
 class Bank {
-   private:
-    int liquidity;
-    std::vector<Account *> _clientAccounts;
-    typedef std::vector<Account *>::const_iterator accountIterator;
+private:
+    int _liquidity;
+    std::vector<Account*> _clientAccounts;
 
     bool isUniqueId(int id) const;
+
+public:
+    Bank();
+
+    int getLiquidity() const;
+    void addLiquidity(int amount);
+
+    bool createAccount(int id, int initialValue);
+    bool deleteAccount(int id);
+    bool addFundsToAccount(int id, int amount);
+    bool giveLoan(int id, int amount);
+
+    friend std::ostream& operator<<(std::ostream& os, const Bank& bank) {
+        os << "Bank information:\n";
+        os << "Liquidity: " << bank._liquidity << "\n";
+        std::vector<Account*>::const_iterator account = bank._clientAccounts.begin();
+        for (; account != bank._clientAccounts.end(); account++) {
+            os << **account << "\n";
+        }
+        return os;
+    }
+
+    ~Bank();
 };
 
-#endif
+#endif  // BANK_HPP

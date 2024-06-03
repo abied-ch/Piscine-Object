@@ -1,0 +1,11 @@
+# CACHE
+
+.vscode
+
+# OBJ/DEP FILES
+
+*/obj*
+
+#EXECUTABLES
+
+ex00/bank

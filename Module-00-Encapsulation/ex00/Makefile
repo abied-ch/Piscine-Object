@@ -1,22 +1,23 @@
-CXX			= c++
+CXX		 = c++
 
-NAME		= btc
+NAME		= bank
 
-RM			= rm -rf
+RM		  = rm -rf
 
 SRCS_DIR	= src
 
 OBJS_DIR	= obj
 
-CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -g
+CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -Iinc -g
 
-SRCS   	= \
-        $(SRCS_DIR)/main.cpp \
-        $(SRCS_DIR)/DivideAndRule.cpp \
+SRCS		= \
+		$(SRCS_DIR)/main.cpp \
+		$(SRCS_DIR)/Bank.cpp \
+		$(SRCS_DIR)/Account.cpp \
 
-OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
+OBJS		= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 
-DEPS	= $(OBJS:%.o=%.d)
+DEPS		= $(OBJS:%.o=%.d)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
@@ -25,22 +26,18 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.cpp
 	mkdir -p $(OBJS_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+all: $(NAME)
 
-all		: $(NAME)
-
-run		: re
-		@clear
-
-fclean	: clean
-		$(RM) $(NAME)
-		$(RM) $(OBJS_DIR)
+fclean: clean
+	$(RM) $(NAME)
+	$(RM) $(OBJS_DIR)
 
 clean:
 	$(RM) $(OBJS)
+	$(RM) $(DEPS)
 
-re		: fclean all
+re: fclean all
 
-database: clean
-	$(CXX) $(CXXFLAGS) -DDATABASE='"$(DB)"' -o $(NAME) $(SRCS)
+-include $(DEPS)
 
-.PHONY	: all clean fclean re run database
+.PHONY: all clean fclean re

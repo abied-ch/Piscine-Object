@@ -9,11 +9,16 @@ private:
     int _value;
 
 public:
-    Account(int id, int value) : _id(id), _value(value) {}
-    int getId() const { return _id; }
-    int getValue() const { return _value; }
-    void addValue(int amount) { _value += amount; }
-    void subtractValue(int amount) { _value -= amount; }
+    Account(int id, int value);
+    int getId() const;
+    int getValue() const;
+    void addValue(int amount);
+    void subtractValue(int amount);
+
+    friend std::ostream& operator<<(std::ostream& os, const Account& account) {
+        os << "[" << account._id << "] - [" << account._value << "]";
+        return os;
+    }
 };
 
 #endif  // ACCOUNT_HPP
