@@ -8,7 +8,7 @@
 
 int main() {
     try {
-        Graph graph(10, 10);
+        Graph graph(9, 9);
         graph.addPoint(Vector2(0, 0));
         graph.addPoint(Vector2(2, 2));
         graph.addPoint(Vector2(4, 2));

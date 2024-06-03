@@ -54,37 +54,3 @@ void Graph::draw() const {
     }
     std::cout << std::endl;
 }
-
-void Graph::generatePNG(const std::string& filename) const {
-    FILE* file = fopen(filename.c_str(), "wb");
-    if (not file) {
-        throw std::runtime_error("Unable to open file for writing.");
-    }
-
-    png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (not png) {
-        throw std::runtime_error("Unable to create png struct.");
-    }
-
-    png_infop info = png_create_info_struct(png);
-    if (not info) {
-        throw std::runtime_error("Unable to create png info struct.");
-    }
-
-    if (setjmp(png_jmpbuf(png)) != 0) {
-        throw std::runtime_error("Error during png creation.");
-    }
-
-    png_init_io(png, file);
-
-    png_set_IHDR(
-        png,
-        info,
-        _size.x + 1,
-        _size.y + 1,
-        8,
-        PNG_COLOR_TYPE_RGBA,
-        PNG_INTERLACE_NONE,
-        PNG_COMPRESSION_TYPE_DEFAULT,
-        PNG_FILTER_TYPE_DEFAULT);
-}

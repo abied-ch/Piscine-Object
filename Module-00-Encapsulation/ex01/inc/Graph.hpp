@@ -1,6 +1,9 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <png.h>
+
+#include <iostream>
 #include <vector>
 
 #include "Vector2.hpp"
@@ -18,7 +21,6 @@ public:
     void addLine(const Vector2& start, const Vector2& end);
     void readPointsFromFile(const std::string& filename);
     void draw() const;
-    void generatePNG(const std::string& filename) const;
 };
 
 #endif  // GRAPH_HPP
