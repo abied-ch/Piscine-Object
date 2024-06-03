@@ -3,10 +3,10 @@
 
 #include <iostream>
 
-class Worker;
+#include "ATool.hpp"
 
-void announce(const std::string& structType) {
-    std::cout << "Initializing instance of " << structType << " structure." << std::endl;
+void announce(const std::string& structureType) {
+    std::cout << "Initializing instance of " << structureType << "." << std::endl;
 }
 
 struct Position {
@@ -19,68 +19,60 @@ struct Statistic {
     Statistic(int level, int exp) : level(level), exp(exp) { announce("Statistic"); }
 };
 
-struct Shovel {
-    int numberOfUses;
-    Worker* owner;
-
-    Shovel(int uses, Worker* owner = NULL) : numberOfUses(uses), owner(owner) { announce("Shovel"); }
-
-    void use() {
-        if (numberOfUses > 0) {
-            numberOfUses--;
-            std::cout << "Shovel used, remaining uses: " << numberOfUses << std::endl;
-        } else {
-            std::cout << "Shovel has no more uses left!" << std::endl;
-        }
-    }
-};
-
 class Worker {
 private:
     Position _coordonnee;
     Statistic _stat;
-    Shovel* _shovel;
+    ATool* _tool;
 
 public:
-    Worker(Position position, Statistic statistic) : _coordonnee(position), _stat(statistic), _shovel(NULL) {}
+    Worker(Position position, Statistic statistic) : _coordonnee(position), _stat(statistic), _tool(NULL) {}
     ~Worker() {
-        if (_shovel != NULL) {
+        if (_tool != NULL) {
             std::cout << "Worker destroyed - Shovel remains." << std::endl;
         }
     }
 
-    void giveShovel(Shovel* shovel) {
-        if (shovel->owner != NULL) {
-            std::cout << "Taking Shovel from previous owner." << std::endl;
-            shovel->owner->takeShovel();
+    void giveTool(ATool* tool) {
+        std::string newToolType = tool->getType();
+        if (tool->hasOwner()) {
+            std::cout << "Taking " << newToolType << " from previous owner." << std::endl;
+            tool->release();
         }
 
-        if (_shovel != NULL) {
-            std::cout << "Worker already has a Shovel. Reassigning new Shovel to Worker." << std::endl;
-        } else {
-            std::cout << "Giving Shovel to Worker." << std::endl;
+        if (_tool != NULL) {
+            std::cout << "Worker already has a tool: " << _tool->getType() << ". Releasing tool." << std::endl;
+            _tool->release();
         }
-        _shovel = shovel;
-        _shovel->owner = this;
+        std::cout << "Giving " << newToolType << " to Worker." << std::endl;
+        _tool = tool;
+        _tool->newOwner(this);
     }
 
-    void takeShovel() {
-        if (_shovel != NULL) {
-            std::cout << "Taking Shovel from Worker." << std::endl;
+    void takeTool() {
+        if (_tool != NULL) {
+            std::cout << "Taking " << _tool->getType() << " from Worker." << std::endl;
         }
-        _shovel->owner = NULL;
-        _shovel = NULL;
+        _tool = NULL;
     }
 
     void print() const {
         std::cout << "Worker(Position: (" << _coordonnee.x << ", " << _coordonnee.y << ", " << _coordonnee.z
                   << "), Statistic: (Level: " << _stat.level << ", Exp: " << _stat.exp << "))" << std::endl;
-        if (_shovel != NULL) {
-            std::cout << "Worker has a Shovel with " << _shovel->numberOfUses << " uses left." << std::endl;
+        if (_tool != NULL) {
+            std::cout << "Worker has a Shovel with " << _tool->getNumberOfUses() << " uses left." << std::endl;
         } else {
             std::cout << "Worker does not have a Shovel." << std::endl;
         }
     };
 };
+
+inline void ATool::release() {
+    if (_owner != NULL) {
+        Worker* oldOwner = _owner;
+        _owner = NULL;
+        oldOwner->takeTool();
+    }
+}
 
 #endif  // WORKER_HPP

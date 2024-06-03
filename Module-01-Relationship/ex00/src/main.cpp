@@ -1,3 +1,4 @@
+#include "ATool.hpp"
 #include "Worker.hpp"
 
 int main() {
@@ -10,11 +11,11 @@ int main() {
 
     std::cout << std::endl;
 
-    worker1.giveShovel(&shovel);
+    worker1.giveTool(&shovel);
     worker1.print();
 
     std::cout << "\nGiving Shovel to worker2:" << std::endl;
-    worker2.giveShovel(&shovel);
+    worker2.giveTool(&shovel);
     worker1.print();
     worker2.print();
 
