@@ -10,3 +10,7 @@
 # OBJ/DEP FILES
 
 */obj*
+
+# DUMPS
+
+*vgcore*
