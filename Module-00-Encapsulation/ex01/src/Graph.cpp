@@ -9,6 +9,9 @@
 #include "Vector2.hpp"
 
 Graph::Graph(float width, float height) : _size(width, height) {
+    if (width > 99 or height > 99) {
+        throw std::runtime_error("Max graph size: 99 x 99");
+    }
 }
 
 void Graph::addPoint(const Vector2& point) {
@@ -41,14 +44,14 @@ void Graph::draw() const {
     }
 
     for (int y = (int)_size.y; y >= 0; --y) {
-        std::cout << y << " ";
+        std::cout << y << "  ";
         for (int x = 0; x <= _size.x; ++x) {
             std::cout << grid[y][x] << " ";
         }
         std::cout << std::endl;
     }
 
-    std::cout << " ";
+    std::cout << "  ";
     for (int x = 0; x <= _size.x; ++x) {
         std::cout << x << " ";
     }
